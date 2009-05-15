@@ -7,7 +7,22 @@ class AnanasblauParsersVoteTest < ActiveSupport::TestCase
   def test_01_create_voting
     assert_equal [:create, {:question => 'Is there a god?', :options => []}], @parser.parse('Is there a god?')
   end
-  def test_02_list_my_votings
-    assert_equal :list, @parser.parse('list')
+  def test_02_create_voting_with_options
+    assert_equal [:create, {:question => 'Is there a god?', :options => %w(Yes Maybe No)}], @parser.parse('Is there a god? Yes. Maybe. No')
+    assert_equal [:create, {:question => 'Is there a god?', :options => %w(Yes Maybe No)}], @parser.parse('Is there a god? Yes Maybe No')
+  end
+  def test_03_list_my_votings
+    assert_equal :list, @parser.parse('@vote list')
+  end
+  def test_04_vote_on_id
+    assert_equal [:vote, {:id => '123', :value => 'No'}], @parser.parse('@vote #123 No')
+  end
+  def test_05_vote_on_username
+    assert_equal [:vote, {:user_screen_name => 'TomK32', :value => 'Yes'}], @parser.parse('@vote @TomK32 Yes')
+  end
+  def test_06_errors
+    assert_equal :error, @parser.parse('@vote Yes')
+    assert_equal :error, @parser.parse('@vote @TomK32')
+    assert_equal :error, @parser.parse('@vote #123')
   end
 end
