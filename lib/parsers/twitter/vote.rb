@@ -6,15 +6,13 @@ module Ananasblau
       def parse(input)
         case input.split(" ")[1] || input
         when /^\@/ # vote by user name
-          value = input.split(" ")[2..-1].join(' ')
-          return :error if value.blank?
-          return :vote, {:user_screen_name => input.split(" ")[1][1..-1], :value => value }
+          option = input.split(" ")[2..-1].join(' ')
+          return :error if option.blank?
+          return :vote, {:user_screen_name => input.split(" ")[1][1..-1], :option => option }
         when /^\#?\d+/ # vote by survey id
-          value = input.split(" ")[2..-1].join(' ')
-          return :error if value.blank?
-          return :vote, {:id => input.split(" ")[1][/\d+/], :value => value}
-        when 'list'
-          return :list
+          option = input.split(" ")[2..-1].join(' ')
+          return :error if option.blank?
+          return :vote, {:id => input.split(" ")[1][/\d+/], :option => option}
         when 'create' # a new survey
         else
           if input.match(/\?/)
