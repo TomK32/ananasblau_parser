@@ -13,7 +13,6 @@ module Ananasblau
           option = input.split(" ")[2..-1].join(' ')
           return :error if option.blank?
           return :vote, {:id => input.split(" ")[1][/\d+/], :option => option}
-        when 'create' # a new survey
         else
           if input.match(/\?/)
             # options are everything from the ? on
@@ -21,7 +20,7 @@ module Ananasblau
             if options.size == 1
               options = input[/\?.*/][1..-1].split(' ')
             end
-            return :create, {:question => input[/.*?( create)? (.*?\?)/].gsub(/.*?( create)?\? /, ''),
+            return :create, {:question => input.gsub(/.*?( create| new) /, '').gsub(/\?.*/, '?'),
               :options => options.map!{|w| w.strip.gsub(/\s+/, ' ')}}
           else
             return :error
