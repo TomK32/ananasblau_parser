@@ -16,6 +16,7 @@ class AnanasblauParsersVoteTest < ActiveSupport::TestCase
   end
   def test_03_vote_on_id
     assert_equal [:vote, {:id => '123', :option => 'No'}], @parser.parse('@vote #123 No')
+    assert_equal [:vote, {:id => 'is-there-a-god', :option => 'Yes'}], @parser.parse('@vote #is-there-a-god Yes')
   end
   def test_04_vote_on_username
     assert_equal [:vote, {:user_screen_name => 'TomK32', :option => 'Yes'}], @parser.parse('@vote @TomK32 Yes')

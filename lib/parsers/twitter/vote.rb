@@ -9,10 +9,10 @@ module Ananasblau
           option = input.split(" ")[2..-1].join(' ')
           return :error if option.blank?
           return :vote, {:user_screen_name => input.split(" ")[1][1..-1], :option => option }
-        when /^\#?\d+/ # vote by survey id
+        when /^\#+/ # vote by survey id
           option = input.split(" ")[2..-1].join(' ')
           return :error if option.blank?
-          return :vote, {:id => input.split(" ")[1][/\d+/], :option => option}
+          return :vote, {:id => input.split(" ")[1].gsub(/^#/, ''), :option => option}
         else
           if input.match(/\?/)
             # options are everything from the ? on
